@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earth Climate Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="top">
+  <h1>Earth Climate Dashboard</h1>
+  <p>Monthly temperature, rainfall, humidity and wind from NASA POWER, with a simple two-year trend estimate.</p>
+</header>
+
+<main>
+  <section class="panel loc">
+    <form id="locForm">
+      <label>Place
+        <select id="preset">
+          <option value="13.0827,80.2707" selected>Chennai, India</option>
+          <option value="28.6139,77.2090">Delhi, India</option>
+          <option value="19.0760,72.8777">Mumbai, India</option>
+          <option value="51.5072,-0.1276">London, UK</option>
+          <option value="40.7128,-74.0060">New York, USA</option>
+          <option value="-33.8688,151.2093">Sydney, Australia</option>
+          <option value="custom">Custom coordinates</option>
+        </select>
+      </label>
+      <label>Latitude <input id="lat" type="number" step="0.0001" min="-90" max="90" value="13.0827"></label>
+      <label>Longitude <input id="lon" type="number" step="0.0001" min="-180" max="180" value="80.2707"></label>
+      <button type="submit">Load NASA data</button>
+    </form>
+    <p id="status" role="status">Loading…</p>
+  </section>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="panel"><h2>Temperature</h2><p class="sub">Monthly mean at 2 m (°C) with a 12-month rolling average.</p><div class="ch"><canvas id="cTemp"></canvas></div></section>
+  <section class="panel"><h2>Rainfall</h2><p class="sub">Monthly total precipitation (mm), calculated from NASA's mm/day values.</p><div class="ch"><canvas id="cRain"></canvas></div></section>
+  <section class="panel"><h2>Humidity and wind</h2><p class="sub">Relative humidity at 2 m (%) and wind speed at 2 m (m/s).</p><div class="ch"><canvas id="cAtm"></canvas></div></section>
+
+  <section class="panel"><h2>Climate change comparison</h2>
+    <p class="sub" id="cmpSub"></p>
+    <div class="cmpgrid" id="cmpStats"></div>
+    <div class="ch"><canvas id="cCmp"></canvas></div>
+  </section>
+
+  <section class="panel"><h2>Two-year trend estimate</h2>
+    <p class="sub">Seasonal average plus a straight-line trend fitted to past data. The shaded range is the typical past scatter around that line. <strong>This is a statistical estimate, not a NASA forecast.</strong></p>
+    <label class="inline">Parameter
+      <select id="projVar">
+        <option value="T2M">Temperature (°C)</option>
+        <option value="RAIN">Rainfall (mm/month)</option>
+        <option value="RH2M">Humidity (%)</option>
+        <option value="WS2M">Wind speed (m/s)</option>
+      </select>
+    </label>
+    <div class="ch"><canvas id="cProj"></canvas></div>
+  </section>
+
+  <section class="panel"><h2>El Niño monitoring</h2>
+    <p class="sub">ENSO state is published by agencies, not calculated here. These are the sources to check:</p>
+    <ul class="links">
+      <li><a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php" target="_blank" rel="noopener">NOAA Oceanic Niño Index (ONI) table</a></li>
+      <li><a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/" target="_blank" rel="noopener">NOAA ENSO diagnostic discussion</a></li>
+      <li><a href="https://iri.columbia.edu/our-expertise/climate/forecasts/enso/current/" target="_blank" rel="noopener">IRI ENSO forecast</a></li>
+      <li><a href="https://www.pmel.noaa.gov/elnino/" target="_blank" rel="noopener">NOAA PMEL El Niño theme page</a></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  Data: <a href="https://power.larc.nasa.gov/" target="_blank" rel="noopener">NASA POWER</a> (monthly, community RE). Recent months can be missing because of reporting delay.
+  Estimates on this page are simple statistics and not official climate projections.
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
